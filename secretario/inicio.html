@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es" ng-app='secreto'>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CARTES - Inicio</title>
+    <!-- Hojas de estilos -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <!--link href="../css/mdb.css" rel="stylesheet"-->
+    <link href="../css/mdb.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="../css/nuevoEstilo.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/jquery.toastmessage.css" rel="stylesheet">
+
+    <link href="../font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+</head>
+
+<body ng-controller='secretarioController' class="full-bg-img">
+
+   <!-- SideNav slide-out button -->
+    <a href="#" data-activates="slide-out" class="navbar-brand button-collapse"><i class="material-icons">menu</i></a>
+    <!--/. SideNav slide-out button -->
+
+    <!-- Sidebar navigation -->
+    <ul id="slide-out" class="side-nav admin-side-nav dark-side-nav">
+        <!-- Logo -->
+        <div class="logo-wrapper">
+            <img src="{{urlFinal}}" class="img-responsive img-circle">
+            <div class="rgba-stylish-strong" ng-repeat="p in puestos">
+                <p class="user white-text" ng-if="p._id == usuario.EMPPUE">
+                    {{p.PUENOM}}
+                </p>
+            </div>
+        </div>
+        <!--/. Logo -->
+        <br>
+        <!-- Side navigation links -->
+        <ul class="collapsible collapsible-accordion">
+            <li class="waves-effect waves-light"></li>
+            <li><a href="#intro" class="waves-effect waves-light"><i class="fa fa-home"></i> Home</a></li>
+            <li><a href="juntas/juntas_de_trabajo.html" class="waves-effect waves-light"><i class="fa fa-users"></i> Juntas</a></li>
+            <!--li><a href="#" class="waves-effect waves-light"><i class="fa fa-line-chart"></i> Ver Acuerdos</a></li>
+            <li><a href="#" class="waves-effect waves-light"><i class="fa fa-users"></i> Website Traffic</a></li>
+            <li><a href="#" class="waves-effect waves-light"><i class="fa fa-search"></i> SEO</a></li>
+            <li><a href="#" class="waves-effect waves-light"><i class="fa fa-share-alt"></i> Social</a></li-->
+        </ul>
+        <!--/. Side navigation links -->
+
+    </ul>
+    <!--/. Sidebar navigation -->
+
+    <!--Navbar-->
+    <nav class="double-navbar navbar navbar-fixed-top unique-color z-depth-1" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header pull-left">
+                <!-- SideNav slide-out button -->
+                <a href="#" data-activates="slide-out" class="button-collapse"><i class="fa fa-bars"></i></a>
+                <!--/. SideNav slide-out button -->
+
+            </div>
+
+            <!-- Navbar Icons -->
+            <ul class="list-inline pull-right text-center">
+                <li class="dropdown">
+                    <!--a href="#" class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a-->
+                    <a style="font-size:7.5pt;" href="#" class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-bell"></i><span class="caret"></span></a>
+                    <ul class="black dropdown-menu" role="menu">
+                        <li><a style="font-size:9pt;" href="#" class="waves-effect waves-light" data-toggle="modal" data-target="#contact-form"><i class="fa fa-bell"></i><span> Notificaciones</span></a></li>        
+                        <li class="divider"></li>
+                        <li><a href="#" style="font-size:9pt;">No tienes Notifiaciones</a></li>
+                    </ul>
+                </li>
+                <li><a style="font-size:7.5pt;" href="#" class="waves-effect waves-light" data-toggle="modal" data-target="#contact-form"><i class="fa fa-cogs"></i><br><span>Perfil</span></a></li>
+                <li><a style="font-size:7.5pt;" href="#" class="waves-effect waves-light logout" data-toggle="modal" data-target="#contact-form"><i class="fa fa-sign-out"></i><br><span>Salir</span></a></li>
+            </ul>
+            <!--/. Navbar Icons -->
+        </div>
+    </nav>
+    <!--/.Navbar-->
+    <br><br><br>
+    <!--div class="container"-->
+        <div id="infoUser" class="header" style="background-color:#FFFFFF;">
+            <img src="{{urlFinal}}" alt="" class="circle responsive-img">
+            <h5><i class='icon-foursquare'></i>&nbsp;{{empresa.CIANOM}}&nbsp;<i class='icon-foursquare'></i></h5>
+            <h1 style="color:black;"><b id="saludo"></b> {{usuario.EMPNOM}}</h1><br>
+            <div ng-repeat="p in puestos">
+                <p ng-if="p._id == usuario.EMPPUE">
+                    {{p.PUENOM}}
+                </p>
+            </div>
+            <!--p>senior web developer</p-->
+        </div>
+</body>
+
+<!-- Scripts -->
+    <!-- JQuery -->
+    <script type="text/javascript" src="../js/jquery-2.0.0.min.js"></script>
+    <!-- AngularJS -->
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+    <!-- Script de control -->
+    <script type="text/javascript" src="../js/app_secretario.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <!-- Material Design Bootstrap -->
+    <script type="text/javascript" src="../js/mdb.min.js"></script>
+    <script type="text/javascript" src="../cordova.js"></script>
+
+    <script>
+        // Initialize collapse button
+        $(".button-collapse").sideNav();
+        // Initialize collapsible (uncomment the line below if you use the dropdown variation)
+        $('.collapsible').collapsible();
+    </script>
+
+    <script type="text/javascript" src="../js/jquery.toastmessage.js"></script>
+
+</html>

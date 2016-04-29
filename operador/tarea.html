@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es" ng-app='secreto'>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CARTES - Nueva Junta</title>
+    <!-- Hojas de estilos -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="../css/mdb.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="../css/style.css" rel="stylesheet">
+    <!-- Toast -->
+    <link href="../css/jquery.toastmessage.css" rel="stylesheet">
+    <!-- Calendario -->
+    <link href="../css/datepicker.css" rel="stylesheet">
+
+    <link rel='stylesheet' type='text/css'href='../css/classic.time.css'/>
+
+    <!-- Scripts -->
+    <!-- JQuery -->
+    <script type="text/javascript" src="../js/jquery-2.0.0.min.js"></script>
+    <!-- AngularJS -->
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+    <script type="text/javascript" src="../js/socket.io-1.3.7.js"></script>
+    <!-- Script de control -->
+    <script type="text/javascript" src="../js/app_empleado.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <!-- Material Design Bootstrap -->
+    <script type="text/javascript" src="../js/mdb.min.js"></script>
+    <!-- Toast -->
+    <script type="text/javascript" src="../js/jquery.toastmessage.js"></script>
+    <!-- Calendario -->
+    <script type="text/javascript" src="../js/bootstrap-datepicker.js"></script>
+
+    <script type='text/javascript'src='../js/picker.time.js'></script>
+    <script type="text/javascript" src="../cordova.js"></script>
+</head>
+
+<body ng-controller='empleadoController' class="full-bg-img">
+    <!--div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a href="juntas_de_trabajo.html" class="btn-floating btn-large waves-effect waves-light red"><i class="icon-mail-reply"></i></a>
+    </div-->
+    <div class="fixed-action-btn" style="bottom: -15px; right: 0px;">
+      <div class="alert alert-danger alertas">
+        <a href="inicio.html" class="white-text"><i class="icon-mail-reply"></i> Volver a la página anterior</a>
+      </div>
+    </div>
+    <!-- Intro image -->
+    <div id="config-color" style="background-color:white;">
+      <div class="verticalcenter text-center black-text">
+        <div class="animated flip">
+          <h5>Tarea {{tarea.TARDES}}</h5>
+          <!--h4>{{empresa.nombre}}</h4>
+          <span>Crear Junta de Trabajo</span-->
+          <i id='log-config' class='icon-suitcase large'></i>
+        </div>
+      </div>
+    </div>
+    <!-- Contenido -->
+    <section> 
+        <div class="container">
+            <div class="space-30"></div>
+            <div class="space-30"></div>
+            <div class="space-30"></div>
+            <div class="col-md-12">
+                <!--Card Reveal-->
+                <div class="card hoverable">
+                    <div class="card-image">
+                        <div class="view overlay hm-white-slight z-depth-1">
+                        	<img src="../img/junta.png" class="img-thumbnail"/>
+                            <!--img src="http://mdbootstrap.com/images/reg/reg%20(7).jpg"-->
+                            <!--span class="card-title activator grey-text text-darken-1" style="font-size:11pt;">Clave de la Junta: {{junta.JUNNUM}}</span><br>
+                            <p>{{junta.JUNMOT}}</p-->
+                            <div class="mask waves-effect activator"></div>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                    	<p class="titulo"> Número de tarea: {{tarea.TARCON}}</p>
+                        <div class='row'>
+                        	<div class="col-md-2"></div>
+                        	<div class="col-md-8 text-center" style="padding: 25px;">
+                        		Descripción de la Tarea: <b>{{tarea.TARDES}}</b><br>
+                                <b>Presupuesto: ${{tarea.TARIMP}}</b><br>
+								Tarea con una duración de {{tarea.TARCAN}} horas para realizar. <br>Tendras que subir como entregable un {{tarea.TARENT}} <br>
+                                <b>Status: {{estado_de_tarea}}</b> <br>
+								<p ng-if='tarea.TARSTA=="A" && bloqueado=="true"'>
+									<a href="#" class="btn teal white-text" ng-click='iniciar()'>
+										<i class='mdi-av-play-circle-outline'></i>&nbsp;Iniciar tarea.
+									</a>
+								</p>
+								<div ng-if='tarea.dependencias.length > 0'>
+									<h5>Dependencias</h5>
+								    <table class="table">
+										<thead>
+									    	<td>Depende de</td>
+									    	<td>Estado</td>
+									    </thead>
+									    <tr ng-repeat='d in dependencias'>
+									    	<td >{{d.TARDES}}</td>
+									    	<td ><div ng-if='d.TARSTA=="A"'>Asignada</div>
+									    		<div ng-if='d.TARSTA=="P"'>En progreso</div>
+									    		<div ng-if='d.TARSTA=="D"'>En destiempo</div>
+									    		<div ng-if='d.TARSTA=="V"'>En validación</div>
+									    		<div ng-if='d.TARSTA=="T"'>Terminada</div></td>
+									    </tr>
+									</table>
+								</div>
+                        	</div>
+                        </div>
+                        <span class="card-title activator grey-text text-darken-4"><i class="icon-pencil icon-large"></i> Subir entregable</span>
+                        <!--a href="#"></a-->
+                    </div>
+                    <div class="card-reveal">
+                        <div ng-if='bloqueado=="false"'>
+	    				   <span class="card-title grey-text text-darken-4">No puedes subir tu entregable hasta que las tareas de las cuales depende ésta tarea sean terminadas.<i class='mdi-remove right'></i></span>
+	    			    </div>
+	    			<div ng-if='tarea.TARSTA=="A"'>
+                    <!--div ng-if='tarea.ACUSTA=="No iniciada"'-->
+	    				<span class="card-title grey-text text-darken-4">No puedes subir tu entregable hasta que no inicias la tarea.<i class='icon-remove right'></i></span>
+	    			</div>
+	    			<div ng-if='tarea.TARSTA=="T"'>
+	    				<span class="card-title grey-text text-darken-4">La tarea ya esta terminada.<i class='icon-remove right'></i></span>
+	    				<br>
+	    			</div>
+	    			<div ng-if='tarea.TARSTA=="V"'>
+	    				<span class="card-title grey-text text-darken-4">La tarea está en progreso de validación.<i class='icon-remove right'></i></span>
+	    				<br>
+	    			</div>
+	    			<div ng-if='bloqueado=="true" && tarea.TARSTA=="P"'>
+	      			<span class="card-title grey-text text-darken-4">Subir entregable<i class='icon-remove right'></i></span>
+	      			<form class="form-horizontal" role="form"  ng-submit= "entregable()">
+	      				<div class="form-group">
+							<label for="ACUCJU">URL de archivo</label>
+							<div class="col s12 m12 l12">
+								<input class="form-control" id="ACUCJU" ng-model='tarea.TARURL' name="nombre" type="text" class="validate" required>
+							</div>
+						</div>
+					    <div class="form-group">
+							<button type="submit" class="btn btn waves-effect waves-red right">Aceptar</button>
+						</div>  
+				    </form>  
+				    </div>
+	    			</div>
+                </div>
+                        
+                <!--/.Card Reveal-->
+            </div>
+        </div>
+    </section>
+
+</body>
+<script type="text/javascript">
+    $.datetimepicker.setLocale('es');
+    $('#hora').datetimepicker({
+      datepicker:false,
+      format:'H:i',
+      step:60
+    });
+
+    $('.datepicker').datepicker({
+        format: 'dd/mm/yyyy'
+    });
+</script>
+</html>
+		

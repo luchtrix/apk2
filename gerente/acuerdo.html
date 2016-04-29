@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es" ng-app='secreto'>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CARTES - Nueva Junta</title>
+    <!-- Hojas de estilos -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <!--link href="../css/materialize.min.css" rel="stylesheet"-->
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="../css/mdb.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="../css/style.css" rel="stylesheet">
+    <!-- Toast -->
+    <link href="../css/jquery.toastmessage.css" rel="stylesheet">
+    <!-- Calendario -->
+    <link href="../css/datepicker.css" rel="stylesheet">
+
+    <link rel='stylesheet' type='text/css'href='../css/classic.time.css'/>
+
+    <!-- Scripts -->
+    <!-- JQuery -->
+    <script type="text/javascript" src="../js/jquery-2.0.0.min.js"></script>
+    <!-- AngularJS -->
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+    <script type="text/javascript" src="../js/socket.io-1.3.7.js"></script>
+    <!-- Script de control -->
+    <script type="text/javascript" src="../js/app_directivo.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <!-- Material Design Bootstrap -->
+    <script type="text/javascript" src="../js/mdb.min.js"></script>
+    <!-- Toast -->
+    <script type="text/javascript" src="../js/jquery.toastmessage.js"></script>
+    <!-- Calendario -->
+    <script type="text/javascript" src="../js/bootstrap-datepicker.js"></script>
+    <script type='text/javascript'src='../js/picker.time.js'></script>
+    <script type="text/javascript" src="../cordova.js"></script>
+</head>
+
+<body ng-controller='directivoController' class="full-bg-img">
+    
+    <!--div class="fixed-action-btn" style="bottom: 45px; right: 0px;">
+      	<div class="alert alert-danger alertas">
+      		<a href="#" class="white-text"><i class="icon-share"></i> Finalizar Asignación de Tareas</a>
+    	</div>
+    </div-->
+
+    <div class="fixed-action-btn" style="bottom: -15px; right: 0px;">
+      <div class="alert alert-danger alertas">
+        <a href="inicio.html" class="white-text"><i class="icon-mail-reply"></i> Volver a la página anterior</a>
+      </div>
+    </div>
+    <!-- Intro image -->
+    <div id="config-color" style="background-color:white;">
+      <div class="verticalcenter text-center black-text">
+        <div class="animated flip">
+          <h5>Detalles del acuerdo {{acuerdo.ACUDES}}</h5>
+          <!--h4>{{empresa.nombre}}</h4>
+          <span>Crear Junta de Trabajo</span-->
+          <i id='log-config' class='icon-suitcase large'></i>
+        </div>
+      </div>
+    </div>
+    <!-- Contenido -->
+    <section> 
+        <div class="container">
+            <div class="space-30"></div>
+            <div class="space-30"></div>
+            <div class="space-30"></div>
+            <div class="col-md-12">
+                <!--Card Reveal-->
+                <div class="card hoverable">
+                    <div class="card-image">
+                        <div class="view overlay hm-white-slight z-depth-1">
+                        	<img src="../img/junta.png" class="img-thumbnail"/>
+                            <!--img src="http://mdbootstrap.com/images/reg/reg%20(7).jpg"-->
+                            <!--span class="card-title activator grey-text text-darken-1" style="font-size:11pt;">Clave de la Junta: {{junta.JUNNUM}}</span><br>
+                            <p>{{junta.JUNMOT}}</p-->
+                            <div class="mask waves-effect activator"></div>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                    	<p class="titulo"> Consecutivo del acuerdo: {{acuerdo.ACUCON}}</p>
+                        <div class='row'>
+                        	<div class="col-md-2"></div>
+                        	<div class="col-md-8 text-center" style="padding: 25px;">
+                        		<p class="espacio"> Descripción: {{acuerdo.ACUDES}}</p>
+								La fecha límite para cumplir con el acuerdo es el {{acuerdo.ACUTIM}} <br>
+								<b>{{dias_para_junta}}</b>
+								<br>
+								<p ng-if="estado_de_acuerdo == 'Asignado'" class="brown white-text">Status {{estado_de_acuerdo}}</p>
+								<p ng-if="estado_de_acuerdo == 'En progreso'" class="green white-text">Status {{estado_de_acuerdo}}</p>
+								<p ng-if="estado_de_acuerdo == 'En destiempo'" class="red white-text">Status {{estado_de_acuerdo}}</p>
+								<p ng-if="estado_de_acuerdo == 'Terminado'" class="blue white-text">Status {{estado_de_acuerdo}}</p>
+								<br>
+								<!--div ng-if='bloqueado=="true" && acuerdo.ACUSTA=="Terminada"'>
+									<a href="#" class="btn right" id="entregablebtn">
+										<i class='mdi-file-cloud-upload'></i> Subir entregable
+									</a>
+								</div-->
+								<div ng-if='tareas.length == 0'>
+									<p class="text-center">Para comenzar agregue tareas.</p>
+								</div>
+								<div ng-if='tareas.length > 0'>
+									<h5>Tareas</h5>
+								    <table class="table table-striped">
+										<thead>
+									    	<td>Tarea</td>
+									    	<td>Depende de</td>
+									    	<td>Estado</td>
+									    	<td>Entregable</td>
+									    	<td>Validar</td>
+									    </thead>
+									    <tr ng-repeat='d in tareas'>
+									    	<td >{{d.TARDES}}</td>
+									    	<td ><div ng-repeat='dep in d.dependencias_des'>{{dep}}<br></div></td>
+									    	<td >
+									    		<div ng-if='d.TARSTA=="A"'>Asignada</div>
+									    		<div ng-if='d.TARSTA=="P"'>En progreso</div>
+									    		<div ng-if='d.TARSTA=="D"'>En destiempo</div>
+									    		<div ng-if='d.TARSTA=="V"'>En validación</div>
+									    		<div ng-if='d.TARSTA=="T"'>Terminada</div>
+									    	</td>
+									    	<td><a ng-if='d.TARSTA=="V" || d.TARSTA=="T"' href='{{d.TARURL}}' target='blank'>Ver</a></td>
+									    	<td><button ng-if='d.TARSTA=="V"' class="btn teal white-text" ng-click='validarTarea(d)'>Validar</button></td>
+									    </tr>
+									</table>
+									<div ng-if="estado_de_acuerdo == 'Asignado'">
+										<a href="#" id="avisar" class="btn btn-primary waves-effect waves-light">Terminar la Asignación de Tareas</a>
+									</div>
+									<div ng-if="estado_de_acuerdo == 'En progreso'">
+										<a href="#" id="cerrar" class="btn btn-primary waves-effect waves-light">Cerrar el Acuerdo</a>
+									</div>
+								</div>
+                        	</div>
+                        </div>
+                        <div ng-if="estado_de_acuerdo == 'Asignado'">
+                        	<span class="card-title activator grey-text text-darken-4"><i class="icon-pencil icon-large"></i> Agregar Tareas</span>
+                        </div>
+                        <!--a href="#"></a-->
+                    </div>
+                    <div class="card-reveal">
+                        <span class="card-title grey-text text-darken-4" style="font-size:13pt;">Agregar Tareas<i class="icon-remove right"></i></span>
+                        <hr>
+                        <div ng-if='acuerdo.ACUSTA=="Terminada"'>
+		    				<span class="card-title grey-text text-darken-4">El acuerdo ya esta terminado.<i class='mdi-navigation-close right'></i></span>
+		    				<br>
+		    				<h5>Entregable</h5>
+		    				<img ng-if='type_file=="img"' src="{{url_final}}" class="responsive-img">
+		    				<a ng-if='type_file=="pdf"' target="black" href="{{url_final}}">Ver documento</a>
+		    			</div>
+		    			<div ng-if='personas.length == 0'>
+		    				<span class="card-title grey-text text-darken-4">No hay empleados dados de alta en el sistema para asignar tareas.<i class='mdi-navigation-close right'></i></span>
+		    				<br>
+		    			</div>
+	    				<div ng-if='acuerdo.ACUSTA!="T" && personas.length > 0'>
+	      					<span class="card-title grey-text text-darken-4">Tarea {{tareas.length + 1}}<i class='mdi-navigation-close right'></i></span>
+	      					<form class="form-horizontal" role="form" ng-submit="nuevaTarea(acuerdo)">					    
+					              	<div class="form-group">
+					                	<label class="col-sm-1 control-label"><i class="icon-user"></i> Persona a cargo</label>
+					                	<div class="col-sm-12">
+					                  		<select class="browser-default" ng-model="tarea.TARRES" required>
+					                    		<option ng-repeat="d in personas" value="{{d._id}}">{{d.EMPNOM}}</option>
+					                  		</select>
+					                	</div>
+					             	</div>
+					             	<div class="form-group">
+								        <div class="col s12 m12 l12 input-field">
+								        	<i class="icon-pencil prefix"></i>
+								        	<textarea id="ACUDES" class="materialize-textarea report-body" ng-model="tarea.TARDES" required></textarea>
+
+								        	<!--textarea class="form-control" id="ACUDES" class="validate" ng-model="tarea.TARDES" required></textarea-->
+								        	<label for="ACUDES">Descripción</label>
+								        </div>
+							        </div>
+							        <div class="form-group">
+								        <div class="col s12 m12 l12 input-field">
+								        <i class="icon-time prefix"></i>
+								    	    <input class="form-control" id="ACUTIM" type="number" maxlength="2" class="validate" ng-model="tarea.TARCAN" required>
+								    	    <label for="ACUTIM">Horas</label>
+								        </div>
+							        </div>
+							        <div class="form-group">
+								        <div class="input-field col s12 m12 l12">
+								        	<i class="icon-upload-alt prefix"></i>
+								    	    <input class="form-control" id="ACUENT" type="text" class="validate" ng-model="tarea.TARENT" required>
+								    	    <label for="ACUENT">Entregable</label>
+								        </div>
+							        </div>
+							        <div class="form-group">
+								        <div class="input-field col s12">
+					            			<i class="icon-money prefix"></i>
+					            			<input type="number" class="form-control"  ng-model="tarea.TARIMP" step='0.01' required>
+											<label for="clave">Presupuesto</label>
+					          			</div>
+							        </div>
+							        <p>
+							    		<a href="#" class="btn-flat" id="dependencias">
+							    			Añadir dependencias de tareas
+							    		</a>
+							    	</p>
+							    	<div ng-if='checkedDependencias.length > 0' style="width:auto;height:200px;overflow-y:scroll;">
+		        		
+						        		<h5>Dependencias</h5>
+						        		<table class="table">
+							        		<thead>
+							        			<td>Depende de</td>
+							        		</thead>
+							        		<tr ng-repeat='descripcion in checkedDependencias'>
+							        			<td >{{descripcion}}</td>
+							        		</tr>
+							        	</table>
+		        					</div>
+		        				<div id="msjError"></div>
+							    <div class="form-group text-center">
+									<button type="submit" class="btn btn waves-effect waves-red right">Agregar</button>
+								</div>  
+						
+				    		</form>  
+				    	</div>
+	    			</div>
+                </div>
+                        
+                <!--/.Card Reveal-->
+            </div>
+        </div>
+    </section>
+    <!-- Modal -->
+  <div class="modal fade" id="aviso" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h5 class="modal-title">Terminar la Asignación de Tareas</h5>
+        </div>
+        <div class="modal-body">
+          <p>Realmente desea terminar de Asignar Tareas, para que sus Operadores empiecen cuando antes?</p>          
+        </div>
+        <div class="modal-footer">
+          <!--button type="button" class="btn btn-default" data-dismiss="modal">Close</button-->
+          	<a class="wavs-effects wavs-green btn-flat" data-dismiss="modal">Cancelar</a>
+			<button class="wavs-effects wavs-green btn-flat" data-dismiss="modal" ng-click='avisoOperadores()'>Terminar</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="modal fade" id="cerrandoAcuerdo" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h5 class="modal-title">Cerrando Acuerdo</h5>
+        </div>
+        <div class="modal-body">
+          <p>Realmente terminó de Revisar todas las Tareas?</p>          
+        </div>
+        <div class="modal-footer">
+          <!--button type="button" class="btn btn-default" data-dismiss="modal">Close</button-->
+          	<a class="wavs-effects wavs-green btn-flat" data-dismiss="modal">Cancelar</a>
+			<button class="wavs-effects wavs-green btn-flat" data-dismiss="modal" ng-click='cerrarAcuerdo()'>Si, Quiero Cerrar el Acuerdo</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  	<div class="modal fade" id="inv" role="dialog">
+    <!--div id="inv" class="modal bottom-sheet"-->
+		<div class="modal-content">
+			<div class="row">
+				<div class="col s12">
+					<h6 style="text-align:center;" class="grey-text">Añadir Dependencias</h6>
+				</div>
+			</div>
+			<form class="col s12">
+		        <div class="input-field">
+		            <i class="mdi-action-search prefix"></i>
+		            <input id="icon_prefix" type="text" class="validate" ng-model='busqueda'>
+		        	<label for="icon_prefix" class="">Buscar</label>
+		        </div>
+			</form>
+		   	<span ng-repeat="c in tareas|filter:busqueda">
+				<input type='checkbox' ng-click='addDependencia(c._id,c.TARJUN,c.TARDES)' id="{{c._id}}" value="{{c._id}}" check-list='checkedEmpleados'>
+				<label style="color:black;" for="{{c._id}}">
+					<b class="grey-text">{{c.TARDES}}</b>
+				</label>
+				<br><br>
+			</span>
+		</div>
+		<div class="modal-footer">
+			<a class="modal-action modal-close wavs-effects wavs-green btn-flat" ng-click='limpiar()'>Cancelar</a>
+			<button id="enviarInvitaciones" class="modal-action modal-close wavs-effects wavs-green btn-flat">Añadir</button>
+		</div>
+	</div>
+	<!--div id="entregable" class="modal">
+		<div class="modal-content">
+			<div ng-if='bloqueado=="false"'>
+	    		<span class="card-title grey-text text-darken-4">No puedes subir tu entregable hasta que las tareas se terminen.<i class='mdi-navigation-close right'></i></span>
+	    	</div>
+	    	<div ng-if='acuerdo.ACUSTA=="Terminada"'>
+	    		<span class="card-title grey-text text-darken-4">La tarea ya esta terminada.<i class='mdi-navigation-close right'></i></span>
+	    		<br>
+	    		<h5>Entregable</h5>
+	    		<img src="{{url_final}}" class="responsive-img">
+	    	</div>
+	    	<div ng-if='bloqueado=="true" && acuerdo.ACUSTA!="Terminada"'>
+	      		<span class="card-title grey-text text-darken-4">Subir entregable<i class='mdi-navigation-close right'></i></span>
+	      		<form class="form-horizontal" role="form"  enctype='multipart/form-data'>
+	      			<div class="form-group">
+						<label for="ACUCJU">Nombre</label>
+						<div class="col s12 m12 l12">
+							<input class="form-control" id="ACUCJU" ng-model='filename' name="nombre" type="text" class="validate" required>
+						</div>
+					</div>
+					<div class="file-field input-field">
+			      		<div class="btn">
+			        		<span>Archivo</span>
+			        		<input type="file" file-model="myFile" name='photo'>
+			      		</div>
+			      		<div class="file-path-wrapper">
+			       		    <input class="file-path validate" type="text">
+			      		</div>
+			    	</div>
+				    <div class="form-group">
+						<button type="button" ng-click='entregable(filename, myFile)' class="btn btn waves-effect waves-red right">Aceptar</button>
+					</div>  
+			    </form>  
+			</div>
+		</div>
+	</div-->
+
+</body>
+<script type="text/javascript">
+    $.datetimepicker.setLocale('es');
+    $('#hora').datetimepicker({
+      datepicker:false,
+      format:'H:i',
+      step:60
+    });
+
+    $('.datepicker').datepicker({
+        format: 'dd/mm/yyyy'
+    });
+</script>
+</html>

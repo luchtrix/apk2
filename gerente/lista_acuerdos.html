@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+		<html ng-app='secreto'>
+		<head>
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+			<meta name="msapplication-tap-highlight" content="no" />
+			<meta charset="utf-8" >
+			<title>SECRETO</title>
+			<script type="text/javascript" src="../js/jquery-2.0.0.min.js"></script>
+			<script type="text/javascript" src="../js/angular.min.js"></script>
+			<!--<script type="text/javascript" src="../js/routes.js"></script>-->
+			<script type="text/javascript" src="../js/socket.io-1.3.7.js"></script>
+			<script type="text/javascript" src="../js/materialize.js"></script>
+			<script type="text/javascript" src="../js/app_directivo.js"></script>
+			<script type="text/javascript" src="../cordova.js"></script>
+			<!--<script type="text/javascript" src="../cordova.js"></script>-->
+			<link rel='shortcut icon' type='image/x-icon' href='images/logo.png') />
+			<link rel='stylesheet' href='../css/materialize.css'/>
+			<link rel='stylesheet' href='../css/materialize.min.css'/>
+		</head>
+		<body onload="" class='grey lighten-2' style=''>
+			<!-- Menú y encabezado -->
+			<nav style='background-color: #0288D1;' class='z-depth-3'>
+			  	<a href="directivo.html" style="font-size: 1.5rem;margin-left:10px;"><i class='mdi-navigation-arrow-back'></i></a>
+			  	<a href="#" class="brand-logo center">Acuerdos asignados</a>
+			</nav>
+			<!-- Boton flotante para agregar un nuevo usuario -->
+			<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+		    	<a id="nuevo_acuerdo" class="btn-floating btn-large red">
+		      		<i class="large mdi-content-add"></i>
+		    	</a>
+		  	</div>
+			<div class="container-fluid" ng-controller='directivoController'>
+				<div id="mensaje"></div>
+				<div id="error"></div>
+				<ul class="collection" ng-repeat='acuerdo in acuerdos' style="margin-bottom:0;margin-top:0;">
+					<li class="collection-item avatar" >
+						<i class='mdi-action-description circle'></i>
+						<span class='title'>
+							Clave: {{acuerdo.ACUCJU}}
+						</span>
+						<p style="color: grey">
+							Descripción: {{acuerdo.ACUDES}}
+						</p>
+						<div class="fixed-action-btn horizontal secondary-content">
+						    <a class="btn-floating btn red">
+						      <i class="large mdi-navigation-menu"></i>
+						    </a>
+						    <ul>
+						      <li><a id="#{{acuerdo._id}}-Asignar" class="btn-floating brown modal-trigger"><i class="mdi-editor-mode-edit"></i></a></li>
+						    </ul>
+					  	</div>
+					</li>
+					<div class="modal fade" id="{{acuerdo._id}}-Asignar" >
+						<form class="form-horizontal" role="form" ng-submit="nuevaTarea()">
+					        <div class="modal-content">
+					            <h4>Asignar tareas para {{acuerdo.ACUNAC}}</h4>
+					            <div class="modal-body">
+					            	<div class="form-group">
+								    	<label for="ACUCJU">Clave de la tarea</label>
+								        <div class="col s12 m12 l12">
+								    	    <input class="form-control" id="ACUCJU" type="text" class="validate" ng-model="tarea.ACUCJU" required>
+								        </div>
+							        </div>
+					              	<div class="form-group">
+					                	<label class="col-sm-1 control-label">Persona a cargo</label>
+					                	<div class="col-sm-12">
+					                  		<select class="browser-default" ng-model="tarea.ACUCPE" required>
+					                    		<option ng-repeat="d in personas" value="{{d._id}}">{{d.nombreC}}</option>
+					                  		</select>
+					                	</div>
+					             	</div>
+					             	<div class="form-group">
+								    	<label for="ACUDES">Descripción</label>
+								        <div class="col s12 m12 l12">
+								        	<textarea class="form-control" id="ACUDES" class="validate" ng-model="tarea.ACUDES" required></textarea>
+								        </div>
+							        </div>
+							        <div class="form-group">
+								    	<label for="ACUTIM">Días</label>
+								        <div class="col s12 m12 l12">
+								    	    <input class="form-control" id="ACUTIM" type="number" maxlength="2" class="validate" ng-model="tarea.ACUTIM" required>
+								        </div>
+							        </div>
+							        <div class="form-group">
+								    	<label for="ACUENT">Entregable</label>
+								        <div class="col s12 m12 l12">
+								    	    <input class="form-control" id="ACUENT" type="text" class="validate" ng-model="tarea.ACUENT" required>
+								        </div>
+							        </div>
+							        <div class="form-group">
+								    	<label for="ACUPRE">Presupuesto</label>
+								        <div class="col s12 m12 l12">
+								    	    <input class="form-control" id="ACUPRE" type="number" step='0.1' maxlength="2" class="validate" ng-model="tarea.ACUPRE" required>
+								        </div>
+							        </div>
+					            </div>
+					        </div>
+					        <div class="modal-footer">
+					            <a href="#"class="btn btn-flat modal-action modal-close" >Cancelar</a>
+					            <button type="submit" class="btn btn-flat">Actualizar usuario</button>
+					        </div>
+				        </form>  
+			    	</div>
+			    	<div class="modal fade" id="{{acuerdo._id}}-Asignar">
+					    <div class="modal-content">
+					        <h4>Asignar tareas para {{acuerdo.ACUNAC}}</h4>
+					        
+					    </div>
+					    <div class="modal-footer">
+					        <a href="#"class="btn btn-flat modal-action modal-close" >Cancelar</a>
+					        <button type="submit" ng-click="deleteAcuerdo(acuerdo._id)" class="btn btn-flat">Eliminar</button>
+					    </div> 
+			    	</div>
+				</ul>
+				<!-- Modal para agregar un nuevo acuerdo -->
+				<div class="modal fade" id="nuevo_acuerdo_modal">
+					<form class="col s12" ng-submit="nuevoAcuerdo()">
+						<div class="modal-content">
+							<h4>Registrar acuerdo de la junta</h4>
+						    <div class="row">
+							    <div class="form-group">
+							    	<label for="ACUCJU">Clave del acuerdo</label>
+							        <div class="col s12 m12 l12">
+							    	    <input class="form-control" id="ACUCJU" type="text" class="validate" ng-model="acuerdoN.ACUCJU" required>
+							        </div>
+						        </div>
+						        <div class="form-group">
+							    	<label for="ACUCON">Consecutivo</label>
+							        <div class="col s12 m12 l12">
+							    	    <input class="form-control" id="ACUCON" type="number" maxlength="2" class="validate" ng-model="acuerdoN.ACUCON" required>
+							        </div>
+						        </div>
+						       	<div class="form-group">
+							    	<label for="ACUNAC">Número de acuerdo</label>
+							        <div class="col s12 m12 l12">
+							    	    <input class="form-control" id="ACUNAC" type="number" maxlength="2" class="validate" ng-model="acuerdoN.ACUNAC" required>
+							        </div>
+						        </div>
+				              	<div class="form-group">
+				                	<label class="col-sm-1 control-label">Directivo a cargo</label>
+				                	<div class="col-sm-12">
+				                  		<select class="browser-default" ng-model="acuerdoN.ACUCPE" required>
+				                    		<option ng-repeat="d in directivos" value="{{d._id}}">{{d.nombreC}}</option>
+				                  		</select>
+				                	</div>
+				             	</div>
+				             	<div class="form-group">
+							    	<label for="ACUDES">Descripción</label>
+							        <div class="col s12 m12 l12">
+							        	<textarea class="form-control" id="ACUDES" class="validate" ng-model="acuerdoN.ACUDES" required></textarea>
+							        </div>
+						        </div>
+						        <div class="form-group">
+							    	<label for="ACUTIM">Días</label>
+							        <div class="col s12 m12 l12">
+							    	    <input class="form-control" id="ACUTIM" type="number" maxlength="2" class="validate" ng-model="acuerdoN.ACUTIM" required>
+							        </div>
+						        </div>
+						        <div class="form-group">
+							    	<label for="ACUENT">Entregable</label>
+							        <div class="col s12 m12 l12">
+							    	    <input class="form-control" id="ACUENT" type="text" class="validate" ng-model="acuerdoN.ACUENT" required>
+							        </div>
+						        </div>
+						        <div class="form-group">
+							    	<label for="ACUPRE">Presupuesto</label>
+							        <div class="col s12 m12 l12">
+							    	    <input class="form-control" id="ACUPRE" type="number" step='0.1' maxlength="2" class="validate" ng-model="acuerdoN.ACUPRE" required>
+							        </div>
+						        </div>
+						    </div>
+						    <div class="modal-footer">
+						        <div class="form-group">
+						        	<a href="#" class="btn btn-flat modal-action modal-close" >Cancelar</a>
+					            	<button type="submit" class="btn btn-flat">Agregar Acuerdo</button>
+						        </div>
+						    </div>
+					    </div>
+				    </form>
+				</div>
+			</div>
+		</body>
+		</html>		

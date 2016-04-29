@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es" ng-app='secreto'>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CARTES - Nueva Junta</title>
+    <!-- Hojas de estilos -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../css/font-awesome.min.css">
+    <!-- Materialize core CSS -->
+    <link href="../../css/materialize.min.css" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="../../css/mdb.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Toast -->
+    <link href="../../css/jquery.toastmessage.css" rel="stylesheet">
+    <!-- Calendario -->
+    <link href="../../css/datepicker.css" rel="stylesheet">
+
+    <link rel='stylesheet' type='text/css'href='../../css/classic.time.css'/>
+
+    <!-- Scripts -->
+    <!-- JQuery -->
+    <script type="text/javascript" src="../../js/jquery-2.0.0.min.js"></script>
+    <!-- AngularJS -->
+    <script type="text/javascript" src="../../js/angular.min.js"></script>
+    <!-- Script de control -->
+    <script type="text/javascript" src="../../js/app_orden.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+    <!-- Material Design Bootstrap -->
+    <script type="text/javascript" src="../../js/mdb.min.js"></script>
+    <!-- Materialize core JavaScript -->
+    <script type="text/javascript" src="../../js/materialize.min.js"></script>
+    <!-- Toast -->
+    <script type="text/javascript" src="../../js/jquery.toastmessage.js"></script>
+    <!-- Calendario -->
+    <script type="text/javascript" src="../../js/bootstrap-datepicker.js"></script>
+
+    <script type='text/javascript'src='../../js/picker.time.js'></script>
+    <script type="text/javascript" src="../../cordova.js"></script>
+
+    <script type="text/javascript">
+
+    </script>
+</head>
+
+<body ng-controller='ordenController' class="full-bg-img">
+    <div class="fixed-action-btn" style="bottom: -15px; right: 0px;">
+      <div class="alert alert-danger alertas">
+        <a href="../juntas/juntas_de_trabajo.html" class="white-text"><i class="icon-mail-reply"></i> Volver a la página anterior</a>
+      </div>
+    </div>
+    <!-- Intro image -->
+    <div id="config-color" style="background-color:white;">
+      <div class="verticalcenter text-center black-text">
+        <div class="animated flip">
+          <h5>Orden del Día</h5>
+          <i id='log-config' class='icon-suitcase large'></i>
+        </div>
+      </div>
+    </div>
+    <!-- Contenido -->
+    <section> 
+        <div class="container">
+            <div class="space-30"></div>
+            <div class="space-30"></div>
+            <div class="space-30"></div>
+            <div class="col-md-12">
+                <!--Card Reveal-->
+                <div class="card hoverable">
+                    <div class="card-image">
+                        <div class="view overlay hm-white-slight z-depth-1">
+                            <p class="titulo"> Orden del Dia de la Junta {{junta.JUNNUM}}</p>
+                        </div>
+                    </div>
+                    <a href="#" id="open_modal" class="btn btn-primary waves-effect waves-light"><i class="icon-plus"></i> Nuevo Punto de la Orden del dia</a>
+                    <div class="card-content">
+                        <div ng-if="listOrden.length == 0" class="alert alert-danger">Todavia no hay puntos de la orden del dia</div>
+                        <ul class="collection">
+                            <li class="collection-item avatar ordenBox" ng-repeat="orden in listOrden">
+                                <i class='circle blue teal-text text-darken-1'>
+                                    <!--img src="../../img/junta.png" class="img-thumbnail"/-->
+                                </i>
+                                <p style="font-size:11pt;">
+                                    {{orden.ORDCON}}._ {{orden.ORDDES}}<br>
+                                </p>
+                                <div class="dropdown secondary-content">
+                                    <a href="#" class="dropdown-toggle" data-toggle='dropdown'><i class="small mdi-navigation-more-vert right"></i></a>
+                                    <ul class="dropdown-menu dropdown-menu-right estiloMenuOrden" style="">
+                                        <li style=""><a href="#" id="actualizar" ng-click="openModalUpdate(orden._id)"><i class="icon-pencil"></i> Editar Punto</a></li>
+                                        <li><a href="#" id="eliminar" class="third-content" ng-click="openModalDelete(orden._id)"><i class="icon-trash"></i> Eliminar Punto</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                        <hr>
+                    </div>
+                    <div class="card-reveal">
+                        <span class="card-title grey-text text-darken-4" style="font-size:13pt;">Invitados a la Junta {{}}<i class="icon-remove right"></i></span>
+                        <hr>
+                    </div>
+                </div>
+                <!--/.Card Reveal-->
+            </div>
+        </div>
+    </section>
+
+<div class="modal modal-fixed-footer" id="abrir_modal">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="row">
+                    <div class="col s12">
+                      <h5 class="grey-text">Nuevo Punto de la Orden del Día</h5>
+                    </div>
+                  </div>
+                    <p>Consecutivo: {{consecutivo}}</p>
+              <form class="form-horizontal" role="form" ng-submit="nuevaOrden()">
+                <div class="row">
+                    <div class="input-field">
+                      <i class="icon-pencil prefix"></i>
+                      <label for="motivo" class="center-align grey-text">Descripción del punto de la Orden del Día</label>
+                      <textarea id="motivo" class="materialize-textarea" ng-model="ordenN.ORDDES" required></textarea>
+                      <!--input autocomplete='off' id="motivo" ng-model="juntaN.JUNMOT" type="text" required-->
+                    </div>
+                </div>
+                <div class="text-center">
+                  <button type="submit" class="modal-action modal-close btn btn-primary waves-effect waves-light">Crear punto de la Orden del Día</button>
+                </div>
+              </form>
+                </div>
+                <div class="modal-footer">
+                  <a class="mdi-navigation-close right modal-action modal-close wavs-effects wavs-green btn-flat" data-dismiss="modal">No, cancelar</a>
+                </div>
+            <!--/div-->                        
+</div>
+
+<div ng-repeat="orden in listOrden">
+    <div id="{{orden._id}}-Delete" class="modal bottom-sheet">
+        <div class="modal-content">
+          <div class="row">
+            <div class="col s12">
+              <h5 class="grey-text">Eliminar punto <b><em>{{orden.ORDCON}}</em></b> de la Orden del Día</h5>
+            </div>
+          </div>
+          <p>&iquest;Realmente desea eliminar el punto <b>{{orden.ORDDES}}</b>?</p>
+        </div>
+        <div class="modal-footer">
+          <a class="mdi-navigation-close modal-action modal-close wavs-effects wavs-green btn-flat">No, Cancelar</a>
+          <a href="#" class="wavs-effects wavs-green btn-flat" ng-click="deleteOrden(orden._id)"><i class="mdi-action-delete"></i>Si, lo deseo Eliminar</a>
+        </div>
+      </div>
+
+    <div class="modal modal-fixed-footer" id="{{orden._id}}-Update">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="row">
+                    <div class="col s12">
+                      <h5 class="grey-text">Actualizar Punto <b><em>{{orden.ORDCON}}</em></b> de la Orden del Día</h5>
+                    </div>
+                  </div>
+                    <form class="form-horizontal" role="form" ng-submit="updateOrden(orden)">
+                        <div class="row">
+                            <label class="center-align grey-text espacio">Descripción del punto de la Orden del Día</label>
+                            <div class="input-field">
+                                <i class="espacio icon-pencil prefix"></i>
+                                <textarea class="espacio materialize-textarea" autofocus="on" ng-model="orden.ORDDES" required></textarea>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                          <button type="submit" class="btn btn-primary waves-effect waves-light" data-dismiss="modal">Actualizar punto de la Orden del Día</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                  <a class="mdi-navigation-close right modal-action modal-close wavs-effects wavs-green btn-flat" data-dismiss="modal">No, cancelar</a>
+                </div>
+            <!--/div-->                        
+    </div>
+</div>
+
+</body>
+</html>

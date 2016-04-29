@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es" ng-app="secreto">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
+    <meta name="author" content="GeeksLabs">
+    <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <title>Iniciar Sesión en CARTES</title>
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <!-- bootstrap theme -->
+    <link rel='stylesheet' href='css/materialize.css'/>
+            <link rel='stylesheet' href='css/materialize.min.css'/>
+            <link rel='stylesheet' href='css/perfect-scrollbar.css'/>
+            <link rel='stylesheet' href='css/style.min.css'/>
+            <style type="text/css">
+                html,body {
+                    height: 100%;
+                }
+                
+                html {
+                    display: table;
+                    margin: auto;
+                }
+                body {
+                    display: table-cell;
+                    vertical-align: middle;
+                    background-color: #4c75a3;
+                }
+            </style>
+    <!--link href="css/materialize.min.css" rel="stylesheet"-->
+    <!--link href="css/style-responsive.css" rel="stylesheet" /-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="js/jquery-2.0.0.min.js"></script>
+    <!-- AngularJS -->
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <!-- Script de control -->
+    <script type="text/javascript" src="js/rutas.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+</head>
+
+  <body ng-controller="loginController">
+    <div id="login-page" class="row" ng-controller='loginController'>
+          <div id="error"></div>
+            <div class="col s12 z-depth-4 card-panel">
+              <form class="login-form" ng-submit='login()'>
+                <div class="row">
+                  <div class="input-field col s12 center">
+                    <img src="images/login-logo.png" alt="" class="circle responsive-img valign profile-image-login">
+                    <p class="center login-form-text">CARTES</p>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="input-field col s12">
+                    <i class="mdi-communication-vpn-key prefix"></i>
+                    <input id="empresa" ng-model='datos.EMPRFC' type="text" required>
+                    <label for="empresa" class="center-align">RFC de la empresa</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="input-field col s12">
+                    <i class="mdi-social-person-outline prefix"></i>
+                    <input id="username" ng-model='datos.EMPCEE' type="text" required>
+                    <label for="username" class="center-align">Celular</label>
+                  </div>
+                </div>
+                <div class="row margin">
+                  <div class="input-field col s12">
+                    <i class="mdi-action-lock-outline prefix"></i>
+                    <input id="password" ng-model='datos.EMPPAS' required type="password">
+                    <label for="password">Clave</label>
+                  </div>
+                </div>
+                <div class="row">
+                    <div id="msjError"></div>
+                  <div class="input-field col s12">
+                    <input type="submit" value="Entrar" class="btn waves-effect waves-light col s12">
+                  </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
+
+  </body>
+</html>

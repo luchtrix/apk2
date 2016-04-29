@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html lang="es" ng-app='perfil'>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CARTES - SignUp</title>
+    <!-- Hojas de estilos -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="../css/mdb.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="../css/style.css" rel="stylesheet">
+    <!-- Toast -->
+    <link href="../css/jquery.toastmessage.css" rel="stylesheet">
+
+    <!-- Scripts -->
+    <!-- JQuery -->
+    <script type="text/javascript" src="../js/jquery-2.0.0.min.js"></script>
+    <!-- AngularJS -->
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+    <!-- Script de control -->
+    <script type="text/javascript" src="../js/app_perfil.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <!-- Material Design Bootstrap -->
+    <script type="text/javascript" src="../js/mdb.js"></script>
+    <!-- Toast -->
+    <script type="text/javascript" src="../js/jquery.toastmessage.js"></script>
+    <script type="text/javascript">
+    // función para convertir caracteres a mayusculas
+      function convertToUpper(){
+        cadena = (document.getElementById('rfc').value).toUpperCase();
+        document.getElementById('rfc').value = cadena;
+      }
+    </script>
+</head>
+
+<body ng-controller='perfilController'>
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a href="../inicio/inicio.html" class="btn-floating btn-large waves-effect waves-light red"><i class="icon-home"></i></a>
+    </div>
+    <!-- Intro image -->
+    <div id="config-color">
+      <div class="verticalcenter text-center white-text">
+        <div class="animated flip">
+          <h4>{{empresa.nombre}}</h4>
+          <span>CONFIGURACIÓN DE EMPRESA</span>
+          <i id='log-config' class='icon-cog large'></i>
+        </div>
+      </div>
+    </div>
+    <!-- Contenido -->
+    <section class="full-bg-img-actions"> 
+        <div class="container">
+          <div class="space-30"></div>
+          <div class="space-30"></div>
+          <!-- Definimos tabs para mostrar la información de la empresa -->
+          <ul class="nav nav-tabs tabs-3">
+            <li class="active col-md-4 col-xs-4 col-sm-4 col-lg-4"><a data-toggle="tab" href="#home">Datos de Empresa</a></li>
+            <li class="col-md-4 col-xs-4 col-sm-4 col-lg-4"><a data-toggle="tab" href="#menu4">Datos de Ubicación</a></li>
+            <li class="col-md-4 col-xs-4 col-sm-4 col-lg-4"><a data-toggle="tab" href="#menu5">Datos de Propietario</a></li>
+          </ul>
+          <!-- Contenidos de los tabs -->
+          <div class="tab-content card-panel blue-grey lighten-5">
+          <!-- Tab para mostrar información de la empresa -->
+            <div id="home" class="tab-pane fade in active">
+              <br>
+              <h5 class="text-center">Datos de empresa</h5>
+              <form class="form-horizontal" role="form" ng-submit="updateEmpresa(empresa)">
+                <div class="row">
+                      <div class="col s12">
+                        <label for="rfc"  class="center-align">RFC de la empresa</label>
+                        <input autocomplete='off' id="rfc" ng-model="empresa.RFC" type="text" onkeyup="convertToUpper()" tabindex="1" required>
+                      </div>
+                </div>
+                <div class="row">
+                      <div class="col s12">
+                        <label for="nombre"  class="center-align">Nombre de la empresa</label>
+                        <input autocomplete='off' id="nombre" ng-model="empresa.nombre" type="text" tabindex="2" required>
+                      </div>
+                </div>
+                <div class="row">
+                      <div class="col s12">
+                        <label for="clave"  class="center-align">Clave de acceso</label>
+                        <input autocomplete='off' id="clave" ng-model="empresa.clave" type="password" tabindex="2" required>
+                      </div>
+                </div>
+
+                <div class="row">
+                  <div class="col s12">
+                    <!--i class="mdi-communication-email prefix"></i-->
+                    <p>Seleccione el logo de su Empresa</p>
+                    <input type="file" id="archivo" file-model="empresa.myFile" name='photo'/>
+                  </div>
+                </div>
+
+                <div class="row">
+                      <button type="submit" tabindex="3" class="col-md-12 col-sm-12 col-xs-12 col-lg-12 btn btn-primary btn-rounded waves-effect waves-light">Modificar Datos</button> 
+                </div>
+              </form>
+            </div>
+            <!-- Tab para mostrar información de ubicación -->
+            <div id="menu4" class="tab-pane fade">
+              <br>
+              <h5 class="text-center">Datos de Ubicación</h5>
+              <form class="form-horizontal" role="form" ng-submit="updateEmpresa(empresa)">
+                <div class="row">
+                      <div class="col s12">
+                        <label for="direccion"  class="center-align">Dirección</label>
+                        <input autocomplete='off' id="direccion" ng-model="empresa.direccion" type="text" tabindex="1" required>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col s12">
+                        <label for="colonia"  class="center-align">Colonia</label>
+                        <input autocomplete='off' id="colonia" ng-model="empresa.colonia" type="text" tabindex="2" required>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col s12">
+                        <label for="municipio"  class="center-align">Municipio</label>
+                        <input autocomplete='off' id="municipio" ng-model="empresa.municipio" type="text" tabindex="3" required>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col s12">
+                        <label for="estado"  class="center-align">Estado</label>
+                        <input autocomplete='off' id="estado" ng-model="empresa.estado" type="text" tabindex="4" required>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col s12">
+                        <label for="cp"  class="center-align">Código Postal</label>
+                        <input autocomplete='off' id="cp" ng-model="empresa.cp" type="text" maxlength="5" minlength='5' tabindex="5" required>
+                      </div>
+                  </div>
+                <div class="row">
+                      <button type="submit" tabindex="6" class="col-md-12 col-sm-12 col-xs-12 col-lg-12 btn btn-primary btn-rounded waves-effect waves-light">Modificar Datos</button> 
+                </div>
+              </form>
+            </div>
+            <!-- Tab para mostrar información del propietario -->
+            <div id="menu5" class="tab-pane fade">
+              <br>
+              <h5 class="text-center">Datos de empresa</h5>
+              <form class="form-horizontal" role="form" ng-submit="updateEmpresa(empresa)">
+                <div class="row">
+                      <div class="col s12">
+                        <label for="celular"  class="center-align">Número de celular del directivo</label>
+                        <input autocomplete='off' id="celular" ng-model="empresa.celular" type="text" maxlength="10" minlength='10' tabindex="1" >
+                      </div>
+                </div>
+                <div class="row">
+                      <div class="col s12">
+                        <label for="email"  class="center-align">Correo del directivo</label>
+                        <input autocomplete='off' id="email" ng-model="empresa.email" type="email" tabindex="2" required>
+                      </div>
+                </div>
+                <div class="row">
+                      <button type="submit" tabindex="3" class="col-md-12 col-sm-12 col-xs-12 col-lg-12 btn btn-primary btn-rounded waves-effect waves-light">Modificar Datos</button> 
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+    </section>
+    <!--/. Intro image -->
+</body>
+
+</html>

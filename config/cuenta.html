@@ -1,0 +1,114 @@
+
+
+<!DOCTYPE html>
+<html lang="es" ng-app='perfil'>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CARTES - SignUp</title>
+    <!-- Hojas de estilos -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="../css/mdb.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="../css/style.css" rel="stylesheet">
+    <!-- Toast -->
+    <link href="../css/jquery.toastmessage.css" rel="stylesheet">
+
+    <!-- Scripts -->
+    <!-- JQuery -->
+    <script type="text/javascript" src="../js/jquery-2.0.0.min.js"></script>
+    <!-- AngularJS -->
+    <script type="text/javascript" src="../js/angular.min.js"></script>
+    <!-- Script de control -->
+    <script type="text/javascript" src="../js/app_perfil.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <!-- Material Design Bootstrap -->
+    <script type="text/javascript" src="../js/mdb.js"></script>
+    <!-- Toast -->
+    <script type="text/javascript" src="../js/jquery.toastmessage.js"></script>
+    <script type="text/javascript">
+    // función para convertir caracteres a mayusculas
+      function convertToUpper(){
+        cadena = (document.getElementById('rfc').value).toUpperCase();
+        document.getElementById('rfc').value = cadena;
+      }
+    </script>
+</head>
+
+<body ng-controller='cuentaController'>
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <a href="../inicio/inicio.html" class="btn-floating btn-large waves-effect waves-light red"><i class="icon-home"></i></a>
+    </div>
+    <!-- Intro image -->
+    <div id="config-color">
+      <div class="verticalcenter text-center white-text">
+        <div class="animated flip">
+          <h4>{{empresa.nombre}}</h4>
+          <span>INFORMACIÓN DE LA CUENTA</span>
+          <i id='log-config' class='icon-cog large'></i>
+        </div>
+      </div>
+    </div>
+    <!-- Contenido -->
+    <section class="full-bg-img-actions"> 
+        <div class="container">
+          <div class="space-30"></div>
+          <div class="space-30"></div>
+          <ul class="nav nav-tabs tabs-3">
+            <li class="active col-md-4 col-xs-4 col-sm-4 col-lg-4"><a data-toggle="tab" href="#home">Datos de la cuenta</a></li>
+            <li class="col-md-4 col-xs-4 col-sm-4 col-lg-4"><a data-toggle="tab" href="#menu4">Estado de la cuenta</a></li>
+          </ul>
+          <div class="tab-content card-panel blue-grey lighten-5">
+            <!-- Tab para mostrar información de la empresa -->
+            <div id="home" class="tab-pane fade in active">
+              <br>
+              <div class="alert alert-danger alert-dismissible fade in" role="alert"> 
+                <div class="divider-new">Datos de la cuenta</div>
+                <h4 class="">Tipo de cuenta: <span class='red-text'>{{empresa.tipoDeCuenta}}</span></h4>
+                <h5 class="">Duración: <span class='red-text'>{{empresa.duracionDeCuenta}} Meses</span></h5>
+                <h5 class="">Fecha de Inicio: <span class='red-text'>{{fecha_creacion}}</span></h5>
+                <h5 class="">Caducidad: <span class='red-text'>{{caducidad}}</span></h5>
+                <!-- Habilitamos el boton de pago -->
+                <div ng-if='dias_restantes < 8'>
+                  <h5>Te sugerimos que realices el pago de tu cuenta para seguir contando con nuestro servicio.</h5>
+                </div>
+              </div>
+            </div>
+            <div id="menu4" class="tab-pane fade">
+              <br>
+              <div class="divider-new">Realizar pago</div>
+              <div class="alert alert-danger alert-dismissible fade in" role="alert"> 
+                <p ng-if='!prueba'>Actualmente tienes pagados {{empresa.duracionDeCuenta}} meses de servicio.</p>
+                <p ng-if='prueba'><i class='icon-warning-sign'></i>&nbsp;Disfruta de nuestros 2 meses de servicio gratuito. Recuerda que
+                posteriormente deberás de pagar $10.00 por cada empleado que tengas registrado.</p>
+                <p ng-if='totalAPagar == 0'><i class='icon-info'></i>&nbsp;Nada por cobrar. Para comenzar a utilizar CARTES te recomendamos agregar empleados al sistema.</p>
+              </div>
+              <form ng-if='totalAPagar > 0' class="form-horizontal" role="form" ng-submit="realizarPago()">
+                <h5>Total a pagar: ${{totalAPagar}}.00 por el mes de {{mes_string}}</h5>  
+                <div class="row">
+                      <div class="col s12">
+                        <label for="clave"  class="center-align">Número telefónico</label>
+                        <input autocomplete='off' id="clave" ng-model="numero" type="number" maxlength="10" minlength='10'  tabindex="1" required>
+                      </div>
+                </div>
+                <div class="row">
+                      <button type="submit" tabindex="2" class="col-md-12 col-sm-12 col-xs-12 col-lg-12 btn btn-primary btn-rounded waves-effect waves-light">Realizar pago</button> 
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+    </section>
+    <!--/. Intro image -->
+</body>
+
+</html>
